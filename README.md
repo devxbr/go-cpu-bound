@@ -14,3 +14,12 @@
    ```bash
    git clone https://github.com/devxbr/go-cpu-bound.git
    cd go-cpu-bound
+
+2. Compile o projeto
+   ```bash
+   go build -o go-cpu-bound
+
+3. Execute o projeto
+   ```bash
+   ./go-cpu-bound -percent 50 -duration 60
+
