@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"runtime"
 	"time"
 )
@@ -19,6 +21,8 @@ func StressCPU(percent int, duration int) {
 
 	// Obtém o número de CPUs disponíveis
 	numCPU := runtime.NumCPU()
+
+	fmt.Printf("running: %d%% da CPU por %d segundos usando %d núcleos.\n", percent, duration, numCPU)
 
 	// Canal para sincronizar a duração
 	stop := make(chan bool)
@@ -44,8 +48,22 @@ func StressCPU(percent int, duration int) {
 
 	// Para todas as goroutines
 	close(stop)
+
+	fmt.Println("Teste concluído.")
 }
 
 func main() {
-	StressCPU(70, 120)
+	percent := flag.Int("percent", 50, "Porcentagem da CPU a ser consumida (1-100)")
+	duration := flag.Int("duration", 10, "Duração do teste em segundos")
+	flag.Parse()
+	if *percent < 1 || *percent > 100 {
+		fmt.Println("o percentual deve estar entre 1 e 100.")
+		return
+	}
+	if *duration < 1 {
+		fmt.Println("a duração deve ser maior que 0.")
+		return
+	}
+
+	StressCPU(*percent, *duration)
 }
